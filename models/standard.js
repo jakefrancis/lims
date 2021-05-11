@@ -34,6 +34,8 @@ standardSchema.plugin(uniqueValidator)
 standardSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
+    returnedObject.date = format(new Date(returnedObject.date), 'MM/dd/yyyy')
+    returnedObject.expiration = format(new Date(returnedObject.expiration), 'MM/dd/yyyy')
     delete returnedObject._id
     delete returnedObject.__v
   }
