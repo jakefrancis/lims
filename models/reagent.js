@@ -1,5 +1,8 @@
 const mongoose = require('mongoose')
 const format = require('date-fns/format')
+const uniqueValidator = require('mongoose-unique-validator')
+
+
 
 const reagentSchema = new mongoose.Schema({
   name: String,
@@ -10,13 +13,16 @@ const reagentSchema = new mongoose.Schema({
     unit: String
   },
   expiration: Date,
-  lot: String, 
   children: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Standard'
-  }]
+  }],
+  labId: {
+    type: Number
+  }
 })
 
+reagentSchema.plugin(uniqueValidator)
 
 reagentSchema.set('toJSON', {
   transform: (document, returnedObject) => {
@@ -28,4 +34,4 @@ reagentSchema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.model('Standard', reagentSchema)
+module.exports = mongoose.model('Reagent', reagentSchema)

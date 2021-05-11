@@ -19,15 +19,60 @@ const reagents = [
       unit: 'ppm'
     },
     expiration: add(new Date(),{years: 5}),
-    lot: '#123456', 
+    labId: 1134 
   },
   {
-    name: 'Anions',
+    name: 'Boric Acid',
     type: 'Reagent',
     date: new Date(),
     expiration: add(new Date(),{years: 5}),
-    lot: '#123456', 
+    labId: 1264 
   },
+]
+
+const standards = [
+  {
+    name: 'F Cl SO4',
+    date: new Date(),
+    location: 'HL',
+    weight: {
+      amount: 0.99,
+      unit: 'g'
+    },
+    finalWeight: {
+      amount: 999.7,
+      unit: 'g'
+    },
+    concentration: {
+      amount: 1,
+      unit: 'ppb'
+    },
+    expiration: add(new Date(),{days: 1}),
+    balance: 'b13',
+    externalParentPath: 'Reagent',
+    parent: 1134,
+  },
+  {
+    name: 'Boron',
+    date: new Date(),
+    location: 'HL',
+    weight: {
+      amount: 20,
+      unit: 'g'
+    },
+    finalWeight: {
+      amount: 1000,
+      unit: 'g'
+    },
+    concentration: {
+      amount: 2000,
+      unit: 'ppm'
+    },
+    expiration: add(new Date(),{years: 1}),
+    balance: 'b13',
+    externalParentPath: 'Reagent',
+    parent: 1264,
+  }
 ]
 
 
@@ -39,5 +84,6 @@ const usersInDb = async () => {
 module.exports = {
   initialUsers,
   reagents,
+  standards,
   usersInDb
 }

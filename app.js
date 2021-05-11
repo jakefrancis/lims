@@ -6,9 +6,11 @@ const cors = require('cors')
 const userRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
 const reagentsRouter = require('./controllers/reagent')
+const standardRouter = require('./controllers/standard')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
+const autoIncrement = require('mongoose-auto-increment')
 
 logger.info('connecting to', config.MONGODB_URI)
 
@@ -26,6 +28,8 @@ if(process.env.NODE_ENV === 'test'){
   app.use('/api/testing', testingRouter)
 }
 
+autoIncrement.initialize(mongoose.connection)
+
 app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
@@ -36,6 +40,7 @@ app.use(middleware.tokenExtractor)
 app.use('/api/users', userRouter)
 app.use('/api/login', loginRouter)
 app.use('/api/reagents', reagentsRouter)
+app.use('/api/standards', standardRouter)
 
 
 

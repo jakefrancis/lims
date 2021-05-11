@@ -3,23 +3,34 @@ const Reagent = require('../models/reagent')
 const userExtractor = require('../utils/middleware').userExtractor
 
 
+
 reagentsRouter.get('/', async (request,response) => {
   const reagents = await Reagent
-    .find({})
+    .find({}).populate('children', 
+    {
+      name: 1, 
+      concentration: 1, 
+      location: 1, 
+      locationId: 1,
+      labId: 1, 
+      date: 1, 
+      expiration: 1,
+      weight: 1,
+      finalWeight: 1    
+    })
     response.json(reagents)
 })
 
 reagentsRouter.post('/', userExtractor, async (request, response) => {
     const body = request.body
     const user = request.user
-
     let newReagent =  {
       name: body.name,
       type: body.type,
       date: body.date,
-      concentration: body.concentration || null,
+      concentration: body.concentration,
       expiration: body.expiration,
-      lot: body.lot, 
+      labId: body.labId, 
     }
     console.log(newReagent)
     const reagent = new Reagent(newReagent)
