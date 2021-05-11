@@ -7,7 +7,13 @@ const userExtractor = require('../utils/middleware').userExtractor
 
 standardsRouter.get('/', async (request,response) => {
   const standards = await Standard
-    .find({}).populate('preparer', {name: 1 }).populate('parent',{name: 1, labId: 1, concentration: 1, date: 1, expiration: 1})
+    .find({}).populate('preparer', {name: 1 }).populate('parent',
+    {
+      name: 1, 
+      labId: 1, 
+      concentration: 1, 
+      date: 1, 
+      expiration: 1})
     response.json(standards)
 })
 
