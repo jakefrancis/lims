@@ -13,7 +13,8 @@ standardsRouter.get('/', async (request,response) => {
       labId: 1, 
       concentration: 1, 
       date: 1, 
-      expiration: 1})
+      expiration: 1
+    })
     response.json(standards)
 })
 
