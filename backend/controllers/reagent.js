@@ -1,12 +1,13 @@
 const reagentsRouter = require('express').Router()
 const Reagent = require('../models/reagent')
+const Standard = require('../models/standard')
 const userExtractor = require('../utils/middleware').userExtractor
 
 
 
 reagentsRouter.get('/', async (request,response) => {
   const reagents = await Reagent
-    .find({}).populate('children', 
+    .find({}).populate( 
     {
       name: 1, 
       concentration: 1, 
@@ -16,7 +17,10 @@ reagentsRouter.get('/', async (request,response) => {
       date: 1, 
       expiration: 1,
       weight: 1,
-      finalWeight: 1    
+      finalWeight: 1,
+      path: 'children',
+      populate: {path: 'children'}
+
     })
     response.json(reagents)
 })
@@ -32,7 +36,6 @@ reagentsRouter.post('/', userExtractor, async (request, response) => {
       expiration: body.expiration,
       labId: body.labId, 
     }
-    console.log(newReagent)
     const reagent = new Reagent(newReagent)
     const savedReagent = await reagent.save()
     response.status(201).json(savedReagent)

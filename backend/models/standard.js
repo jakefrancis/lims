@@ -26,7 +26,11 @@ const standardSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
-  externalParentPath: String,
+  externalParentPath: {
+    type: String,
+    required: true,
+    enum: ['Standard', 'Reagent']
+  },
   parent: {
     type: mongoose.Schema.Types.ObjectId,
     refPath: 'externalParentPath',
@@ -34,7 +38,11 @@ const standardSchema = new mongoose.Schema({
   children: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Standard'
-  }]
+  }],
+  type: {
+    type: String,
+    default: 'Standard'
+  }
 })
 autoIncrement.initialize(mongoose.connection)
 standardSchema.plugin(uniqueValidator)
@@ -49,8 +57,6 @@ standardSchema.set('toJSON', {
     returnedObject.weight = `${returnedObject.weight.amount} ${returnedObject.weight.unit}`
     returnedObject.finalWeight = `${returnedObject.finalWeight.amount} ${returnedObject.finalWeight.unit}`
     returnedObject.concentration = `${returnedObject.concentration.amount} ${returnedObject.concentration.unit}`
-    delete returnedObject.location
-    delete returnedObject.locationId
     delete returnedObject._id
     delete returnedObject.__v
   }

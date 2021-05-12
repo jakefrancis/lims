@@ -13,7 +13,12 @@ standardsRouter.get('/', async (request,response) => {
       labId: 1, 
       concentration: 1, 
       date: 1, 
-      expiration: 1
+      expiration: 1,
+      weight: 1,
+      finalWeight: 1,
+      location: 1,
+      locationId: 1,
+      parent: 1,
     })
     response.json(standards)
 })
@@ -21,10 +26,17 @@ standardsRouter.get('/', async (request,response) => {
 standardsRouter.post('/', userExtractor, async (request, response) => {
     const body = request.body
     const user = request.user
-    const parentSolution = await Reagent.findOne({labId: body.parent})
-    if(!parentSolution){
-      return response.status(401)
+    const parentRef = body.externalParentPath
+
+    const parentSolution = parentRef === 'Reagent' ?
+    await Reagent.findOne({labId: body.parent}) :
+    await Standard.findOne({locationId: body.parent})
+
+    if(parentSolution === null){
+        return response.status(401).json({error: `parentId: ${body.parent} does not exist`})
     }
+    
+   
     let newStandard =  {
       name: body.name,
       date: body.date,
@@ -46,14 +58,12 @@ standardsRouter.post('/', userExtractor, async (request, response) => {
       externalParentPath: body.externalParentPath,
       parent: parentSolution._id,
       preparer: user._id
-    }
-    console.log(parentSolution.labId)
-    console.log(newStandard)
-    
+    }    
   
     const standard = new Standard(newStandard)
     const savedStandard = await standard.save()
     await parentSolution.updateOne({$push: {children: savedStandard._id}})
+    await parentSolution.save()
     response.status(201).json(savedStandard)
 })
 

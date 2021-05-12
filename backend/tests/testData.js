@@ -1,4 +1,6 @@
 const User = require('../models/user')
+const Reagent = require('../models/reagent')
+const Standard = require('../models/standard')
 const add = require('date-fns/add')
 
 const initialUsers = [
@@ -81,9 +83,21 @@ const usersInDb = async () => {
   return users.map(user => user.toJSON())
 }
 
+const reagentsInDb = async () => {
+  const reagents = await Reagent.find({})
+  return reagents.map(reagent => reagent.toJSON())
+}
+
+const standardsInDb = async () => {
+  const standards = await Standard.find({})
+  return standards.map(standard => standard.toJSON())
+}
+
 module.exports = {
   initialUsers,
   reagents,
   standards,
-  usersInDb
+  usersInDb,
+  reagentsInDb,
+  standardsInDb
 }
