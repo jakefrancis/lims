@@ -1,23 +1,43 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react'
+import {useState,useEffect} from 'react'
+import LoginForm from './components/LoginForm';
+import loginService from './services/login'
+import reagentService from './services/reagent'
+
+
 
 function App() {
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedInUser')
+    if(loggedUserJSON){
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      reagentService.setToken(user.token)
+    }
+  },[])
+
+  const handleLogin = async (credentials) => {
+    try{
+      const user = await loginService.login(credentials)
+      window.localStorage.setItem('loggedInUser', JSON.stringify(user))
+      reagentService.setToken(user.token)
+      setUser(user)
+      console.log('success')
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {user === null ? <LoginForm login={handleLogin}/> : <h1>Hello {user.name}</h1>}
     </div>
   );
 }
