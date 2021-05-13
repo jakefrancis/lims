@@ -1,0 +1,5 @@
+post http://localhost:3005/api/standards
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpkZnJhbmNpcyIsImlkIjoiNjA5Y2I3Zjg5MDEzNDQ4NzYzOGJjZjJlIiwiaWF0IjoxNjIwODg0Mjg3fQ.EunM7QFYOe88Ig5haqbt1u53wqkHC7kH9kxaJGl-t2w
+
+{"name":"F Cl SO4","date":"2021-05-13T05:29:43.607Z","location":"HL","weight":{"amount":2,"unit":"g"},"finalWeight":{"amount":999.7,"unit":"g"},"concentration":{"amount":2,"unit":"ppb"},"expiration":"2021-05-14T05:29:43.608Z","balance":"b13","externalParentPath":"Reagent","parent":1134}

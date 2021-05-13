@@ -9,6 +9,7 @@ reagentsRouter.get('/', async (request,response) => {
   const reagents = await Reagent
     .find({}).populate( 
     {
+      path: 'children',
       name: 1, 
       concentration: 1, 
       location: 1, 
@@ -18,9 +19,9 @@ reagentsRouter.get('/', async (request,response) => {
       expiration: 1,
       weight: 1,
       finalWeight: 1,
-      path: 'children',
-      populate: {path: 'children'}
-
+      populate: {path: 'preparer', model: 'User'}
+      
+      
     })
     response.json(reagents)
 })

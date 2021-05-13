@@ -4,11 +4,14 @@ import {useState,useEffect} from 'react'
 import LoginForm from './components/LoginForm';
 import loginService from './services/login'
 import reagentService from './services/reagent'
+import CollapsibleTable from './components/CollapsibleTable';
 
 
 
 function App() {
   const [user, setUser] = useState(null)
+  const [standards, setStandards] = useState([])
+  const [reagents, setReagents] = useState([])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInUser')
@@ -18,6 +21,13 @@ function App() {
       reagentService.setToken(user.token)
     }
   },[])
+
+  const getAllReagents = async () => {
+    const reqReagents = await reagentService.getAll()
+    setReagents(reqReagents)
+  }
+
+  useEffect(getAllReagents, [])
 
   const handleLogin = async (credentials) => {
     try{
@@ -37,7 +47,7 @@ function App() {
 
   return (
     <div className="App">
-      {user === null ? <LoginForm login={handleLogin}/> : <h1>Hello {user.name}</h1>}
+      {user === null ? <LoginForm login={handleLogin}/> : <CollapsibleTable reagents={reagents}/>}
     </div>
   );
 }

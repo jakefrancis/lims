@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = '/api/blogs'
+const baseUrl = '/api/reagents'
 
 let token = null
 
@@ -7,4 +7,9 @@ const setToken = (newToken) => {
   token = `bearer ${newToken}`
 }
 
-export default {setToken}
+const getAll = async () => {
+  const request = await axios.get(baseUrl)
+  return request.data
+}
+
+export default {setToken, getAll}
